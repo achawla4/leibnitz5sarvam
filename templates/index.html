@@ -94,7 +94,7 @@
                     telephony voice conditioning, and Indic acoustic intelligence.
                 </p>
                 <div class="hero-version-pill">
-                    ⚡ Core Spec: v{{ leibnitz_version }} | Forward-Compatible with Leibnitz 8.0 & 10.0+
+                    ⚡ Core Spec: v{{ leibnitz_version }} • Indic Signal AI Studio
                 </div>
             </div>
         </section>
@@ -351,19 +351,6 @@
                         <input type="text" id="copilotInput" class="input-field" placeholder="Ask about this active file..." onkeydown="if(event.key==='Enter') sendCopilotMessage()">
                         <button class="btn btn-saffron" onclick="sendCopilotMessage()">Send</button>
                     </div>
-                </div>
-
-                <!-- Upgradability Info Card -->
-                <div style="margin-top:2rem; padding:1.25rem; background:rgba(0, 255, 136, 0.04); border:1px solid rgba(0, 255, 136, 0.2); border-radius:var(--radius-sm);">
-                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-                        <span style="font-size:0.8rem; font-weight:700; color:var(--signal-green);">
-                            UPGRADE READY: Leibnitz 8.0 & 10.0
-                        </span>
-                        <span style="font-size:0.7rem; color:var(--text-muted);">adapter.py registry</span>
-                    </div>
-                    <p style="font-size:0.75rem; color:var(--text-secondary); line-height:1.4;">
-                        This Sarvam Edition is decoupled through the <code>LeibnitzCoreRegistry</code>. When Leibnitz 8 or 10 drops new quantum or diffusion blocks, decorate them with <code>@leibnitz_extension</code> to expose them across the Sarvam workflow automatically.
-                    </p>
                 </div>
 
             </div>
