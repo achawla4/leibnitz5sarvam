@@ -3,400 +3,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Leibnitz 5.0 for Sarvam | Indic Audio & Signal AI Studio</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
+    <title>Leibnitz 5.0 Signal Processing Suite for Sarvam AI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Mukta:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/sarvam.css">
-    <style>
-        .active-file-card {
-            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(255, 119, 0, 0.08) 100%);
-            border: 1px solid rgba(0, 212, 255, 0.35);
-            border-radius: var(--radius-sm);
-            padding: 1rem 1.25rem;
-            margin-bottom: 1.25rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.75rem;
-        }
-        .file-meta-tag {
-            font-size: 0.8rem;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid var(--border-subtle);
-            padding: 0.25rem 0.6rem;
-            border-radius: 12px;
-            color: var(--text-secondary);
-        }
-        .plot-container-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
-            border-radius: var(--radius-md);
-            padding: 1.75rem;
-            margin-top: 2rem;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
-        }
-        .plot-img {
-            width: 100%;
-            height: auto;
-            border-radius: var(--radius-sm);
-            border: 1px solid #1e293b;
-            display: block;
-            margin-top: 1rem;
-        }
-        .download-btn-group {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-            margin-top: 1rem;
-        }
-        .action-chip {
-            background: rgba(255, 119, 0, 0.12);
-            border: 1px solid rgba(255, 119, 0, 0.35);
-            color: #ffffff;
-            font-size: 0.82rem;
-            padding: 0.45rem 0.9rem;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-weight: 600;
-        }
-        .action-chip:hover {
-            background: var(--sarvam-saffron);
-            color: #060913;
-        }
-    </style>
 </head>
 <body>
-
-    <!-- Top Navigation -->
-    <header class="sarvam-header">
-        <div class="brand-wrapper">
-            <div class="brand-logo">लायब्निट्ज़ 5.0 × सर्वम् AI</div>
-            <span class="brand-badge">Sarvam AI Edition</span>
-            <span class="mode-tag">{{ 'Sarvam Live API' if sarvam_live else 'Demo / Simulation Mode' }}</span>
+    <!-- Branding Header -->
+    <header class="header-brand">
+        <div class="header-left">
+            <div>
+                <h1 class="leibnitz-name">Leibnitz 5.0</h1>
+                <p class="company-tag">SIGNAL PROCESSING SUITE • SARVAM AI</p>
+            </div>
         </div>
-        <div class="nav-actions">
-            <a href="https://sarvam.ai" target="_blank" class="btn btn-outline" style="font-size:0.8rem;">About Sarvam</a>
-            <a href="#pipeline" class="btn btn-saffron" style="font-size:0.8rem;">Launch Studio</a>
-        </div>
+        <nav class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#upload-section">Studio</a>
+            <a href="#sarvam-section">Sarvam AI Suite</a>
+            <a href="#specs">Specifications</a>
+            <span class="status-badge">{{ 'Sarvam Live API' if sarvam_live else 'Simulation Mode' }}</span>
+        </nav>
     </header>
 
-    <main class="app-container">
-        <!-- Hero Banner -->
-        <section class="hero-banner">
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
             <div class="hero-text">
-                <h1>Leibnitz 5.0 for Sarvam AI</h1>
+                <h1>Signal Processing Suite for Sarvam AI</h1>
                 <p>
-                    Unifying Leibnitz mathematical signal processing with Sarvam AI's Indic Foundation Models.
-                    Engineered for high-accuracy Speech-to-Text (Saaras), expressive Voice Synthesis (Bulbul), 
-                    telephony voice conditioning, and Indic acoustic intelligence.
+                    Enterprise-grade mathematical signal processing platform tailored for Sarvam AI Indic Foundation Models.
+                    Features Fast Fourier Transform (FFT), telephony voice conditioning (300–3400 Hz), Voice Activity Detection (VAD), 
+                    tonal pitch analysis, and seamless Sarvam Saaras STT &amp; Bulbul TTS integration.
+                    Built for mathematical precision, optimized for peak performance.
                 </p>
-                <div class="hero-version-pill">
-                    ⚡ Core Spec: v{{ leibnitz_version }} • Indic Signal AI Studio
+                <div class="cta-group">
+                    <button class="btn btn-primary" onclick="document.getElementById('upload-section').scrollIntoView({behavior:'smooth'})">
+                        Start Processing
+                    </button>
+                    <button class="btn btn-secondary" onclick="document.getElementById('sarvam-section').scrollIntoView({behavior:'smooth'})">
+                        Sarvam AI Suite
+                    </button>
                 </div>
             </div>
-        </section>
-
-        <!-- Studio Two-Column Grid -->
-        <div class="studio-grid" id="pipeline">
-            
-            <!-- LEFT PANEL: Audio Capture & Leibnitz DSP Pipeline -->
-            <div class="panel-card">
-                <div class="panel-header">
-                    <h2 class="panel-title">
-                        <span>🎙️</span>
-                        <span>Signal Ingestion & <span class="saffron">Leibnitz DSP</span></span>
-                    </h2>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">Multi-Format (CSV, WAV, TXT, NPY)</span>
-                </div>
-
-                <!-- Active File Card -->
-                <div class="active-file-card" id="activeFileBanner">
-                    <div>
-                        <div style="font-size:0.72rem; text-transform:uppercase; color:var(--signal-cyan); font-weight:700;">
-                            Active File Ingested:
-                        </div>
-                        <div style="font-size:1.05rem; font-weight:700; color:#ffffff;" id="dispFileName">
-                            sanskrit_vedic_chant.wav
-                        </div>
-                        <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:2px;" id="dispFileMeta">
-                            Format: WAV Audio | Rate: 16000 Hz | Duration: 3.0 s
-                        </div>
-                    </div>
-                    <button class="btn btn-saffron" onclick="runPipeline()" style="padding:0.5rem 1.1rem; font-size:0.85rem;">
-                        ▶ Run Leibnitz DSP
-                    </button>
-                </div>
-
-                <!-- Preset Chips -->
-                <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">
-                    Select Preset or Upload Custom File:
-                </p>
-                <div class="presets-strip">
-                    <button class="preset-chip" onclick="loadPreset('sanskrit_chant')">
-                        🕉️ Sanskrit Vedic Recitation
-                    </button>
-                    <button class="preset-chip" onclick="loadPreset('hindi_telephony')">
-                        📞 Hindi Telephony Voice
-                    </button>
-                    <button class="preset-chip" onclick="loadPreset('sinusoid_12hz')">
-                        ⚡ 12 Hz Sinusoid (sinusoidal_12Hz.csv)
-                    </button>
-                </div>
-
-                <!-- Input Controls -->
-                <div class="capture-box">
-                    <button id="recordBtn" class="btn btn-record btn-saffron">
-                        🎙️ स्वरं मुद्रयतु (Record Voice)
-                    </button>
-                    <label class="btn btn-outline" style="cursor:pointer;">
-                        📁 Upload Signal (.csv, .wav, .txt)
-                        <input type="file" id="fileUploadInput" accept=".wav,.csv,.txt,.npy" style="display:none;" onchange="handleFileUpload(this)">
-                    </label>
-                </div>
-
-                <!-- Raw Waveform -->
-                <div class="waveform-container">
-                    <div class="waveform-label">Raw Ingested Signal</div>
-                    <canvas id="rawWaveformCanvas" class="waveform-canvas"></canvas>
-                    <div class="audio-player-wrapper">
-                        <audio id="rawAudioPlayer" controls>
-                            <source id="rawAudioSource" type="audio/wav">
-                        </audio>
-                    </div>
-                </div>
-
-                <!-- Modular Pipeline Blocks -->
-                <p style="font-size:0.8rem; font-weight:700; margin:1.25rem 0 0.5rem; color:var(--text-secondary); text-transform:uppercase;">
-                    Active Leibnitz Modular Pipeline:
-                </p>
-                <div class="pipeline-blocks">
-                    <label class="block-item active">
-                        <div class="block-info">
-                            <h4>Indic VAD & Silence Masker</h4>
-                            <p>Cleans leading/trailing dead air and extracts voiced speech segments</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <span class="badge-version">v5.0</span>
-                            <input type="checkbox" id="chk_vad" checked onchange="runPipeline()">
-                        </div>
-                    </label>
-
-                    <label class="block-item active">
-                        <div class="block-info">
-                            <h4>Telecom Voice Conditioner</h4>
-                            <p>Bandpass 300-3400 Hz filter for real-world Indian telephony noise</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <span class="badge-version">v5.0</span>
-                            <input type="checkbox" id="chk_telephony" checked onchange="runPipeline()">
-                        </div>
-                    </label>
-
-                    <label class="block-item active">
-                        <div class="block-info">
-                            <h4>Indic Phonetic & Pitch Analyzer</h4>
-                            <p>Calculates F0 pitch contour, intonation nuances, and F1-F3 formants</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <span class="badge-version">v5.0</span>
-                            <input type="checkbox" id="chk_phonetics" checked onchange="runPipeline()">
-                        </div>
-                    </label>
-
-                    <label class="block-item active">
-                        <div class="block-info">
-                            <h4>Leibnitz Fourier Spectrum Engine</h4>
-                            <p>Computes high-resolution frequency magnitude distribution</p>
-                        </div>
-                        <div style="display:flex; align-items:center; gap:0.75rem;">
-                            <span class="badge-version">v5.0</span>
-                            <input type="checkbox" id="chk_fft" checked onchange="runPipeline()">
-                        </div>
-                    </label>
-                </div>
-
-                <!-- Conditioned Output Waveform -->
-                <div class="waveform-container" style="border-color:rgba(255, 119, 0, 0.3);">
-                    <div class="waveform-label" style="color:var(--sarvam-saffron);">
-                        Conditioned Signal (Leibnitz DSP Output)
-                    </div>
-                    <canvas id="procWaveformCanvas" class="waveform-canvas"></canvas>
-                    <div class="audio-player-wrapper">
-                        <audio id="procAudioPlayer" controls>
-                            <source id="procAudioSource" type="audio/wav">
-                        </audio>
-                    </div>
-                </div>
-
-                <!-- Acoustic Metrics Strip -->
-                <div class="metrics-grid">
-                    <div class="metric-badge">
-                        <div class="metric-val" id="metricSNR">24.5 dB</div>
-                        <div class="metric-lbl">Acoustic SNR</div>
-                    </div>
-                    <div class="metric-badge">
-                        <div class="metric-val" id="metricPitch">185 Hz</div>
-                        <div class="metric-lbl">Mean Pitch (F0)</div>
-                    </div>
-                    <div class="metric-badge">
-                        <div class="metric-val" id="metricSpeechRatio">88%</div>
-                        <div class="metric-lbl">Voiced Ratio</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- RIGHT PANEL: Sarvam AI Integration Suite -->
-            <div class="panel-card">
-                <div class="panel-header">
-                    <h2 class="panel-title">
-                        <span>🇮🇳</span>
-                        <span>Sarvam <span class="saffron">Indic AI</span> Suite</span>
-                    </h2>
-                    <span style="font-size:0.75rem; color:var(--sarvam-amber);">Saaras • Bulbul • Indic LLM</span>
-                </div>
-
-                <!-- Integration Tabs -->
-                <div class="sarvam-tabs">
-                    <button class="tab-btn active" data-tab="tab-stt">1. Saaras STT</button>
-                    <button class="tab-btn" data-tab="tab-tts">2. Bulbul TTS</button>
-                    <button class="tab-btn" data-tab="tab-copilot">3. Indic DSP Copilot</button>
-                </div>
-
-                <!-- TAB 1: Speech-to-Text (Saaras) -->
-                <div class="tab-content active" id="tab-stt">
-                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        Transcribe the conditioned audio signal using Sarvam's state-of-the-art Indic ASR engine.
-                    </p>
-
-                    <div style="display:flex; gap:0.75rem; margin-bottom:1rem;">
-                        <select id="sttLanguage" class="input-field" style="max-width:220px;" onchange="runSarvamSTT()">
-                            {% for code, name in languages.items() %}
-                            <option value="{{ code }}" {% if code == 'hi-IN' %}selected{% endif %}>{{ name }}</option>
-                            {% endfor %}
-                        </select>
-                        <button id="btnRunSTT" class="btn btn-saffron" onclick="runSarvamSTT()" style="flex:1;">
-                            🚀 Transcribe via Sarvam Saaras
-                        </button>
-                    </div>
-
-                    <div class="transcript-card" id="sttTranscript">
-                        <em>Click "Transcribe via Sarvam Saaras" to run speech recognition on the active signal.</em>
-                    </div>
-                    <div class="transcript-meta" id="sttMeta">
-                        <span>Engine: <strong>Sarvam Saaras ASR</strong></span>
-                        <span>Confidence: <strong>--</strong></span>
-                    </div>
-
-                    <div style="margin-top:1.5rem; background:rgba(0,0,0,0.2); padding:1rem; border-radius:var(--radius-sm);">
-                        <h4 style="font-size:0.82rem; color:var(--signal-cyan); margin-bottom:0.4rem;">
-                            💡 How Leibnitz Enhances Sarvam STT:
-                        </h4>
-                        <p style="font-size:0.78rem; color:var(--text-muted); line-height:1.5;">
-                            Applying the <strong>Telecom Voice Conditioner</strong> and <strong>VAD Silence Masker</strong> prior to ingestion removes 90%+ of out-of-band acoustic artifacts and telecom distortion, directly boosting Indic word error rate (WER) accuracy.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- TAB 2: Text-to-Speech (Bulbul) -->
-                <div class="tab-content" id="tab-tts">
-                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        Generate natural Indic speech with Sarvam Bulbul and instantly inspect its prosody and formants in the Leibnitz studio.
-                    </p>
-
-                    <div style="margin-bottom:0.75rem;">
-                        <textarea id="ttsInputText" class="input-field" rows="3" style="width:100%; resize:vertical;" placeholder="Enter text in Hindi, Sanskrit, Tamil, or English...">नमस्ते, सर्वम् एआई और लायब्निट्ज़ ५.० में आपका स्वागत है।</textarea>
-                    </div>
-
-                    <div style="display:flex; gap:0.75rem; margin-bottom:1rem;">
-                        <select id="ttsLanguage" class="input-field">
-                            {% for code, name in languages.items() %}
-                            <option value="{{ code }}" {% if code == 'hi-IN' %}selected{% endif %}>{{ name }}</option>
-                            {% endfor %}
-                        </select>
-                        <select id="ttsSpeaker" class="input-field" style="max-width:140px;">
-                            <option value="meera">Meera (Female)</option>
-                            <option value="aravind">Aravind (Male)</option>
-                        </select>
-                    </div>
-
-                    <button id="btnRunTTS" class="btn btn-cyan" style="width:100%;" onclick="runSarvamTTS()">
-                        🔊 Synthesize & Load into Leibnitz Studio
-                    </button>
-                </div>
-
-                <!-- TAB 3: Indic DSP Copilot (Sarvam LLM) -->
-                <div class="tab-content" id="tab-copilot">
-                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        Ask the Sarvam Indic AI Copilot for acoustic diagnosis, filter tuning, or phonetic explanations on your active file.
-                    </p>
-
-                    <div class="chat-window" id="copilotChatWindow">
-                        <div class="chat-bubble bot">
-                            <div style="font-size:0.75rem; color:var(--sarvam-amber); margin-bottom:0.25rem;">
-                                🤖 Sarvam Indic DSP Copilot (sarvam-2)
-                            </div>
-                            नमस्ते! मैं आपका सर्वम्-लायब्निट्ज़ ध्वनिकी सहायक हूँ। अपनी लोड की गई सञ्चिका (SNR, F0 Pitch, Formants) से जुड़ा कोई भी प्रश्न पूछें।
-                        </div>
-                    </div>
-
-                    <div class="chat-input-box">
-                        <select id="copilotLang" class="input-field" style="max-width:110px;">
-                            <option value="hi">हिन्दी</option>
-                            <option value="sa">संस्कृतम्</option>
-                            <option value="en">English</option>
-                        </select>
-                        <input type="text" id="copilotInput" class="input-field" placeholder="Ask about this active file..." onkeydown="if(event.key==='Enter') sendCopilotMessage()">
-                        <button class="btn btn-saffron" onclick="sendCopilotMessage()">Send</button>
-                    </div>
-                </div>
-
+            <div class="signal-canvas-container">
+                <canvas id="heroSignal" class="signal-canvas"></canvas>
             </div>
         </div>
+    </section>
 
-        <!-- FULL-WIDTH SECTION: 4-Panel Leibnitz Analytical Plot & Downloads -->
-        <section class="plot-container-card" id="plotSection" style="display:none;">
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
-                <div>
-                    <h3 style="font-size:1.25rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
-                        <span>📊</span>
-                        <span>सङ्केतविश्लेषण-चित्रीकरणम् (Leibnitz 4-Panel Analytical Studio)</span>
-                    </h3>
-                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
-                        Original Waveform, Conditioned Output, Fourier FFT Spectrum, and Time-Frequency Spectrogram.
-                    </p>
-                </div>
-                <div class="download-btn-group">
-                    <a id="btnDownloadCsv" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
-                        📥 Download Signal (.csv)
-                    </a>
-                    <a id="btnDownloadAudio" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
-                        🎵 Download Audio (.wav)
-                    </a>
-                    <a id="btnDownloadReport" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
-                        📋 Diagnostic Report (.json)
-                    </a>
+    <!-- Upload & Studio Section -->
+    <section class="upload-section" id="upload-section">
+        <div class="upload-container">
+            <h2 style="text-align:center; margin-bottom:2rem; color:var(--signal-green); font-size: 2.2rem; font-weight: 800;">
+                Ingest &amp; Condition Signal
+            </h2>
+            
+            <div class="drop-zone" id="dropZone">
+                <h3>Drop Audio or Signal File Here</h3>
+                <p style="color:var(--text-secondary); margin:1rem 0;">Supported formats: .csv, .wav, .txt, .npy</p>
+                <input type="file" id="fileInput" style="display:none;" accept=".csv,.txt,.npy,.wav">
+                <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                    <button class="btn btn-secondary" onclick="event.stopPropagation(); document.getElementById('fileInput').click();">
+                        Browse Files
+                    </button>
+                    <button id="recordBtn" class="btn btn-primary" onclick="event.stopPropagation();">
+                        🎙️ Record Microphone Voice
+                    </button>
                 </div>
             </div>
 
-            <!-- Multi-Panel Plot Image -->
-            <img id="analyticalPlotImg" class="plot-img" src="" alt="Leibnitz Analytical Plot">
-        </section>
+            <!-- Demo Signal Presets -->
+            <div class="demo-presets-container" style="margin-top: 1.75rem; text-align: center;">
+                <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 0.85rem;">
+                    💡 <em>No signal file on hand? Test immediately with benchmark presets:</em>
+                </p>
+                <div style="display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;">
+                    <button type="button" class="preset-btn" onclick="loadDemoSignal('sinusoid_12hz')" style="border-color: rgba(0, 255, 136, 0.4);">
+                        <span style="color: var(--signal-green);">⚡</span> 12 Hz Sinusoid (Benchmark CSV)
+                    </button>
+                    <button type="button" class="preset-btn" onclick="loadDemoSignal('sanskrit_chant')" style="border-color: rgba(0, 212, 255, 0.4);">
+                        <span style="color: var(--signal-blue);">🕉️</span> Sanskrit Vedic Recitation
+                    </button>
+                    <button type="button" class="preset-btn" onclick="loadDemoSignal('hindi_telephony')" style="border-color: rgba(255, 119, 0, 0.4);">
+                        <span style="color: var(--sarvam-saffron);">📞</span> Hindi Telephony Voice (8 kHz)
+                    </button>
+                </div>
+            </div>
 
-        <!-- Hidden Audio Metadata -->
-        <span id="metaSampleRate" style="display:none;">16000 Hz</span>
-        <span id="metaDuration" style="display:none;">3.0 s</span>
-    </main>
+            <!-- Active File Info Display -->
+            <div id="fileInfo" style="margin-top: 1.5rem; text-align: center; display: none;"></div>
 
+            <!-- Signal Settings Container -->
+            <div id="settingsContainer" style="margin-top: 2rem; display: none; background: rgba(5, 8, 18, 0.5); border: 1px solid var(--border-color); border-radius: 0.8rem; padding: 1.5rem; text-align: left;">
+                <h4 style="color: var(--signal-blue); margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem; font-size: 1.15rem; display: flex; align-items: center; gap: 0.5rem;">
+                    ⚙️ Processing Parameters &amp; Modular Pipeline
+                </h4>
+                
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem;">
+                    <div>
+                        <label for="paramSampleRate" style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Sampling Rate (Hz)</label>
+                        <input type="number" id="paramSampleRate" value="1000" step="any" min="0.001" class="input-ctrl" style="width: 100%;">
+                        <span id="rateDetectionLabel" style="font-size: 0.8rem; color: var(--signal-green); display: none; margin-top: 0.25rem;">✔ Auto-detected from file</span>
+                    </div>
+
+                    <div>
+                        <label for="paramFftWindow" style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">FFT Window Function</label>
+                        <select id="paramFftWindow" class="input-ctrl" style="width: 100%;">
+                            <option value="hann" selected>Hann Window</option>
+                            <option value="hamming">Hamming Window</option>
+                            <option value="blackman">Blackman Window</option>
+                            <option value="none">None (Rectangular)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="paramFilterKind" style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Filter Selection</label>
+                        <select id="paramFilterKind" class="input-ctrl" style="width: 100%;">
+                            <option value="telephony" selected>Telecom Bandpass (300-3400 Hz)</option>
+                            <option value="lowpass">Low-Pass Filter</option>
+                            <option value="highpass">High-Pass Filter</option>
+                            <option value="vad">Voice Activity Detector (VAD)</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="paramAcousticAnalysis" style="display: block; font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Acoustic Feature Extraction</label>
+                        <select id="paramAcousticAnalysis" class="input-ctrl" style="width: 100%;">
+                            <option value="f0_formants" selected>Pitch (F0) &amp; Formants (F1-F3)</option>
+                            <option value="spectrum">Magnitude Spectrum Only</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations Action Bar -->
+            <div class="operation-btns" id="operationBtns" style="display: none;">
+                <button class="btn btn-primary" onclick="executeSuiteOperation('fft')">
+                    ⚡ Fast Fourier Transform (FFT)
+                </button>
+                <button class="btn btn-primary" onclick="executeSuiteOperation('telephony')">
+                    🔧 Telephony Filter (300-3400 Hz)
+                </button>
+                <button class="btn btn-primary" onclick="executeSuiteOperation('vad')">
+                    🎙️ Indic VAD Masker
+                </button>
+                <button class="btn btn-primary" onclick="executeSuiteOperation('phonetics')">
+                    🎵 Pitch &amp; Formant Analysis
+                </button>
+                <button class="btn btn-primary" onclick="executeSuiteOperation('pipeline')" style="background: linear-gradient(135deg, var(--accent-gold) 0%, #b8860b 100%); color: var(--darker-bg); font-weight: 800;">
+                    ▶ Run Full Leibnitz Pipeline
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Results Section -->
+    <section class="results-section" id="resultsSection">
+        <div class="upload-container">
+            <h2 style="color:var(--signal-green); margin-bottom:1.5rem; text-align:center; font-size: 2.2rem; font-weight: 800;">
+                Processing Results &amp; Analytics
+            </h2>
+
+            <!-- 4-Panel Analytical Plot -->
+            <img id="analyticalPlotImg" class="plot-img-view" src="" alt="Leibnitz Analytical Plot">
+
+            <!-- Interactive Audio Player -->
+            <div class="player-container">
+                <div style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;">
+                    Conditioned Signal Playback:
+                </div>
+                <audio id="procAudioPlayer" controls>
+                    <source id="procAudioSource" type="audio/wav">
+                </audio>
+            </div>
+
+            <!-- Metrics Summary Grid -->
+            <div class="metrics-strip-leibnitz">
+                <div class="metric-card-leibnitz">
+                    <div class="metric-card-val" id="resSNR">24.5 dB</div>
+                    <div class="metric-card-lbl">Acoustic SNR</div>
+                </div>
+                <div class="metric-card-leibnitz">
+                    <div class="metric-card-val" id="resPitch">185 Hz</div>
+                    <div class="metric-card-lbl">Fundamental Pitch (F0)</div>
+                </div>
+                <div class="metric-card-leibnitz">
+                    <div class="metric-card-val" id="resSpeechRatio">88%</div>
+                    <div class="metric-card-lbl">Voiced Speech Ratio</div>
+                </div>
+                <div class="metric-card-leibnitz">
+                    <div class="metric-card-val" id="resDomFreq">-- Hz</div>
+                    <div class="metric-card-lbl">Dominant Frequency</div>
+                </div>
+            </div>
+
+            <!-- Download Action Bar -->
+            <div style="display: flex; justify-content: center; gap: 1rem; margin: 2rem auto; flex-wrap: wrap;">
+                <a id="btnDownloadCsv" href="#" download class="btn btn-secondary">
+                    📥 Download Signal (.csv)
+                </a>
+                <a id="btnDownloadAudio" href="#" download class="btn btn-secondary" style="border-color: var(--signal-blue); color: var(--signal-blue);">
+                    🎵 Download Audio (.wav)
+                </a>
+                <a id="btnDownloadReport" href="#" download class="btn btn-secondary" style="border-color: var(--accent-gold); color: var(--accent-gold);">
+                    📄 Export Diagnostic Report (.json)
+                </a>
+            </div>
+
+            <div style="text-align:center; margin-top:2rem;">
+                <button class="btn btn-secondary" onclick="resetUpload()">Process Another Signal</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sarvam AI Integration Suite Section -->
+    <section class="sarvam-section" id="sarvam-section">
+        <div class="sarvam-container">
+            <h2 class="section-title" style="margin-bottom: 0.5rem;">Sarvam Indic AI Product Suite</h2>
+            <p class="section-subtitle" style="margin-bottom: 2.5rem;">
+                Seamless integration with Sarvam Foundation Models, Speech Recognition (Saaras), Voice Synthesis (Bulbul), and Indic LLM.
+            </p>
+
+            <div class="tab-nav">
+                <button class="tab-nav-btn active" data-tab="pane-stt">1. Saaras Speech-to-Text</button>
+                <button class="tab-nav-btn" data-tab="pane-tts">2. Bulbul Voice Synthesis</button>
+                <button class="tab-nav-btn" data-tab="pane-copilot">3. Indic DSP Copilot</button>
+            </div>
+
+            <!-- Tab 1: Saaras STT -->
+            <div class="tab-pane active" id="pane-stt">
+                <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+                    Transcribe the conditioned audio signal directly using Sarvam's high-accuracy Indic ASR engine.
+                </p>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+                    <select id="sttLanguage" class="input-ctrl" style="max-width: 240px;" onchange="runSarvamSTT()">
+                        {% for code, name in languages.items() %}
+                        <option value="{{ code }}" {% if code == 'hi-IN' %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="btnRunSTT" class="btn btn-saffron" onclick="runSarvamSTT()" style="flex: 1;">
+                        🚀 Transcribe with Sarvam Saaras
+                    </button>
+                </div>
+
+                <div class="transcript-output-box" id="sttTranscript">
+                    <em>Click "Transcribe with Sarvam Saaras" to run speech recognition on the active signal.</em>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-secondary);" id="sttMeta">
+                    <span>Engine: <strong>Sarvam Saaras ASR</strong></span>
+                    <span>Confidence: <strong>--</strong></span>
+                </div>
+            </div>
+
+            <!-- Tab 2: Bulbul TTS -->
+            <div class="tab-pane" id="pane-tts">
+                <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+                    Generate natural Indic speech with Sarvam Bulbul and immediately analyze its acoustic formants in the Leibnitz studio.
+                </p>
+
+                <div style="margin-bottom: 1rem;">
+                    <textarea id="ttsInputText" class="input-ctrl" rows="3" style="width:100%; resize:vertical;" placeholder="Enter text in Hindi, Sanskrit, Tamil, or English...">नमस्ते, सर्वम् एआई और लायब्निट्ज़ ५.० में आपका स्वागत है।</textarea>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                    <select id="ttsLanguage" class="input-ctrl">
+                        {% for code, name in languages.items() %}
+                        <option value="{{ code }}" {% if code == 'hi-IN' %}selected{% endif %}>{{ name }}</option>
+                        {% endfor %}
+                    </select>
+                    <select id="ttsSpeaker" class="input-ctrl" style="max-width: 160px;">
+                        <option value="meera">Meera (Female)</option>
+                        <option value="aravind">Aravind (Male)</option>
+                    </select>
+                    <button id="btnRunTTS" class="btn btn-cyan" onclick="runSarvamTTS()" style="flex: 1;">
+                        🔊 Synthesize &amp; Load into Leibnitz Studio
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab 3: Indic DSP Copilot -->
+            <div class="tab-pane" id="pane-copilot">
+                <p style="color: var(--text-secondary); margin-bottom: 1.25rem;">
+                    Consult the Sarvam Indic AI Assistant for acoustic diagnosis, filter optimization, and phonetic interpretation.
+                </p>
+
+                <div class="chat-box-leibnitz" id="copilotChatWindow">
+                    <div class="chat-bubble-leibnitz bot">
+                        <div style="font-size:0.75rem; color:var(--sarvam-amber); margin-bottom:0.25rem;">
+                            🤖 Sarvam Indic DSP Copilot (sarvam-2)
+                        </div>
+                        Hello! I am your Leibnitz-Sarvam acoustic assistant. Ask any question regarding your loaded signal, SNR, pitch swaras, or telephony conditioning.
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 0.75rem;">
+                    <select id="copilotLang" class="input-ctrl" style="max-width: 120px;">
+                        <option value="en" selected>English</option>
+                        <option value="hi">हिन्दी</option>
+                        <option value="sa">संस्कृतम्</option>
+                    </select>
+                    <input type="text" id="copilotInput" class="input-ctrl" style="flex: 1;" placeholder="Ask about this active signal..." onkeydown="if(event.key==='Enter') sendCopilotMessage()">
+                    <button class="btn btn-saffron" onclick="sendCopilotMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="features-container">
+            <h2 class="section-title">Core Capabilities</h2>
+            <p class="section-subtitle">Advanced Mathematical Signal Processing &amp; Indic AI Integration</p>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Fourier Transform (FFT)</h3>
+                    <p>High-performance frequency-domain decomposition with optimized windowing for real-time spectral visualization and resonant peak tracking.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Telecom Voice Conditioning</h3>
+                    <p>Custom 4th-order G.711 Butterworth bandpass filter (300–3400 Hz) to eliminate acoustic dead-air and out-of-band telecom noise.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎙️</div>
+                    <h3>Voice Activity Detection (VAD)</h3>
+                    <p>Short-time energy and zero-crossing detection to segment voiced speech from ambient silence, directly optimizing Indic STT accuracy.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Pitch &amp; Formant Analysis</h3>
+                    <p>Autocorrelation-based fundamental pitch (F0) tracking and LPC formant extraction (F1–F3) for Indic prosody and Vedic chanting swaras.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🇮🇳</div>
+                    <h3>Sarvam Saaras &amp; Bulbul APIs</h3>
+                    <p>Direct live integration with Sarvam AI's Indic Speech-to-Text and Text-to-Speech engines across 10+ major Indian languages.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Sarvam Indic DSP Copilot</h3>
+                    <p>Intelligent bilingual conversational assistant powered by Sarvam-2, offering acoustic diagnostics and automated filter pipeline tuning.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Specs Section -->
+    <section class="specs" id="specs">
+        <div class="specs-container">
+            <div>
+                <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Technical Specifications</h2>
+                <div class="specs-list">
+                    <div class="spec-item">
+                        <span class="spec-check">✓</span>
+                        <div>
+                            <h4>Sampling Rate Support</h4>
+                            <p>Full-precision mathematical processing supporting up to 1 MHz sampling rates</p>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-check">✓</span>
+                        <div>
+                            <h4>Indian Telecom Compliance</h4>
+                            <p>Calibrated for G.711 narrowband (8 kHz) and wideband (16 kHz) telephony voice streams</p>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-check">✓</span>
+                        <div>
+                            <h4>Indic Acoustic Modeling</h4>
+                            <p>Phonetically tuned for Dravidian and Indo-Aryan vowels, consonants, and Vedic intonation swaras</p>
+                        </div>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-check">✓</span>
+                        <div>
+                            <h4>Modular Pipeline Architecture</h4>
+                            <p>Decoupled block registry ensuring seamless forward compatibility with future Leibnitz generations</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="visualization-dual">
+                <canvas id="fftViz" class="mini-canvas"></canvas>
+                <canvas id="filterViz" class="mini-canvas"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <p>
-            लायब्निट्ज़ ५.० सङ्केतसंसाधनम् × Sarvam AI • 
+            Leibnitz 5.0 Signal Processing Suite × Sarvam AI • 
             <a href="https://sarvam.ai" target="_blank">Sarvam AI Ecosystem</a>
         </p>
     </footer>
 
+    <!-- Client Script -->
     <script src="/static/js/main.js"></script>
 </body>
 </html>
