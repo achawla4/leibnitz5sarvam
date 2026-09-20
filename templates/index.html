@@ -8,6 +8,65 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/static/css/sarvam.css">
+    <style>
+        .active-file-card {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.08) 0%, rgba(255, 119, 0, 0.08) 100%);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            border-radius: var(--radius-sm);
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .file-meta-tag {
+            font-size: 0.8rem;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid var(--border-subtle);
+            padding: 0.25rem 0.6rem;
+            border-radius: 12px;
+            color: var(--text-secondary);
+        }
+        .plot-container-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: var(--radius-md);
+            padding: 1.75rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+        }
+        .plot-img {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-sm);
+            border: 1px solid #1e293b;
+            display: block;
+            margin-top: 1rem;
+        }
+        .download-btn-group {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+        .action-chip {
+            background: rgba(255, 119, 0, 0.12);
+            border: 1px solid rgba(255, 119, 0, 0.35);
+            color: #ffffff;
+            font-size: 0.82rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+        .action-chip:hover {
+            background: var(--sarvam-saffron);
+            color: #060913;
+        }
+    </style>
 </head>
 <body>
 
@@ -20,7 +79,7 @@
         </div>
         <div class="nav-actions">
             <a href="https://sarvam.ai" target="_blank" class="btn btn-outline" style="font-size:0.8rem;">About Sarvam</a>
-            <a href="#pipeline" class="btn btn-saffron" style="font-size:0.8rem;">Launch Pipeline</a>
+            <a href="#pipeline" class="btn btn-saffron" style="font-size:0.8rem;">Launch Studio</a>
         </div>
     </header>
 
@@ -30,7 +89,7 @@
             <div class="hero-text">
                 <h1>Leibnitz 5.0 for Sarvam AI</h1>
                 <p>
-                    Unifying Leibnitz's advanced mathematical signal processing with Sarvam AI's Indic Foundation Models.
+                    Unifying Leibnitz mathematical signal processing with Sarvam AI's Indic Foundation Models.
                     Engineered for high-accuracy Speech-to-Text (Saaras), expressive Voice Synthesis (Bulbul), 
                     telephony voice conditioning, and Indic acoustic intelligence.
                 </p>
@@ -48,14 +107,32 @@
                 <div class="panel-header">
                     <h2 class="panel-title">
                         <span>🎙️</span>
-                        <span>Acoustic Ingestion & <span class="saffron">Leibnitz DSP</span></span>
+                        <span>Signal Ingestion & <span class="saffron">Leibnitz DSP</span></span>
                     </h2>
-                    <span style="font-size:0.75rem; color:var(--text-muted);">Mono PCM / 16-bit</span>
+                    <span style="font-size:0.75rem; color:var(--text-muted);">Multi-Format (CSV, WAV, TXT, NPY)</span>
+                </div>
+
+                <!-- Active File Card -->
+                <div class="active-file-card" id="activeFileBanner">
+                    <div>
+                        <div style="font-size:0.72rem; text-transform:uppercase; color:var(--signal-cyan); font-weight:700;">
+                            Active File Ingested:
+                        </div>
+                        <div style="font-size:1.05rem; font-weight:700; color:#ffffff;" id="dispFileName">
+                            sanskrit_vedic_chant.wav
+                        </div>
+                        <div style="font-size:0.78rem; color:var(--text-secondary); margin-top:2px;" id="dispFileMeta">
+                            Format: WAV Audio | Rate: 16000 Hz | Duration: 3.0 s
+                        </div>
+                    </div>
+                    <button class="btn btn-saffron" onclick="runPipeline()" style="padding:0.5rem 1.1rem; font-size:0.85rem;">
+                        ▶ Run Leibnitz DSP
+                    </button>
                 </div>
 
                 <!-- Preset Chips -->
                 <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.5rem; text-transform:uppercase;">
-                    Select Preset or Record:
+                    Select Preset or Upload Custom File:
                 </p>
                 <div class="presets-strip">
                     <button class="preset-chip" onclick="loadPreset('sanskrit_chant')">
@@ -64,8 +141,8 @@
                     <button class="preset-chip" onclick="loadPreset('hindi_telephony')">
                         📞 Hindi Telephony Voice
                     </button>
-                    <button class="preset-chip" onclick="loadPreset('synthetic_chirp')">
-                        〰️ Acoustic Sweep (100-3000Hz)
+                    <button class="preset-chip" onclick="loadPreset('sinusoid_12hz')">
+                        ⚡ 12 Hz Sinusoid (sinusoidal_12Hz.csv)
                     </button>
                 </div>
 
@@ -75,14 +152,14 @@
                         🎙️ स्वरं मुद्रयतु (Record Voice)
                     </button>
                     <label class="btn btn-outline" style="cursor:pointer;">
-                        📁 Upload Audio (.wav, .csv)
-                        <input type="file" id="fileUploadInput" accept=".wav,.csv,.npy" style="display:none;" onchange="handleFileUpload(this)">
+                        📁 Upload Signal (.csv, .wav, .txt)
+                        <input type="file" id="fileUploadInput" accept=".wav,.csv,.txt,.npy" style="display:none;" onchange="handleFileUpload(this)">
                     </label>
                 </div>
 
                 <!-- Raw Waveform -->
                 <div class="waveform-container">
-                    <div class="waveform-label">Raw Ingested Audio</div>
+                    <div class="waveform-label">Raw Ingested Signal</div>
                     <canvas id="rawWaveformCanvas" class="waveform-canvas"></canvas>
                     <div class="audio-player-wrapper">
                         <audio id="rawAudioPlayer" controls>
@@ -206,7 +283,7 @@
                     </div>
 
                     <div class="transcript-card" id="sttTranscript">
-                        <em>Click "Transcribe via Sarvam Saaras" to run speech recognition on the conditioned signal.</em>
+                        <em>Click "Transcribe via Sarvam Saaras" to run speech recognition on the active signal.</em>
                     </div>
                     <div class="transcript-meta" id="sttMeta">
                         <span>Engine: <strong>Sarvam Saaras ASR</strong></span>
@@ -226,7 +303,7 @@
                 <!-- TAB 2: Text-to-Speech (Bulbul) -->
                 <div class="tab-content" id="tab-tts">
                     <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        Generate natural Indic speech with Sarvam Bulbul and instantly analyze its prosody and formants with Leibnitz.
+                        Generate natural Indic speech with Sarvam Bulbul and instantly inspect its prosody and formants in the Leibnitz studio.
                     </p>
 
                     <div style="margin-bottom:0.75rem;">
@@ -246,14 +323,14 @@
                     </div>
 
                     <button id="btnRunTTS" class="btn btn-cyan" style="width:100%;" onclick="runSarvamTTS()">
-                        🔊 Synthesize & Send to Leibnitz DSP
+                        🔊 Synthesize & Load into Leibnitz Studio
                     </button>
                 </div>
 
                 <!-- TAB 3: Indic DSP Copilot (Sarvam LLM) -->
                 <div class="tab-content" id="tab-copilot">
                     <p style="font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem;">
-                        Ask the Sarvam Indic AI Copilot for acoustic diagnosis, filter tuning, or phonetic explanations.
+                        Ask the Sarvam Indic AI Copilot for acoustic diagnosis, filter tuning, or phonetic explanations on your active file.
                     </p>
 
                     <div class="chat-window" id="copilotChatWindow">
@@ -261,7 +338,7 @@
                             <div style="font-size:0.75rem; color:var(--sarvam-amber); margin-bottom:0.25rem;">
                                 🤖 Sarvam Indic DSP Copilot (sarvam-2)
                             </div>
-                            नमस्ते! मैं आपका सर्वम्-लायब्निट्ज़ ध्वनिकी सहायक हूँ। अपने ध्वनि संकेत (SNR, F0 Pitch, Formants) से जुड़ा कोई भी प्रश्न पूछें।
+                            नमस्ते! मैं आपका सर्वम्-लायब्निट्ज़ ध्वनिकी सहायक हूँ। अपनी लोड की गई सञ्चिका (SNR, F0 Pitch, Formants) से जुड़ा कोई भी प्रश्न पूछें।
                         </div>
                     </div>
 
@@ -271,7 +348,7 @@
                             <option value="sa">संस्कृतम्</option>
                             <option value="en">English</option>
                         </select>
-                        <input type="text" id="copilotInput" class="input-field" placeholder="Ask about this signal..." onkeydown="if(event.key==='Enter') sendCopilotMessage()">
+                        <input type="text" id="copilotInput" class="input-field" placeholder="Ask about this active file..." onkeydown="if(event.key==='Enter') sendCopilotMessage()">
                         <button class="btn btn-saffron" onclick="sendCopilotMessage()">Send</button>
                     </div>
                 </div>
@@ -291,6 +368,35 @@
 
             </div>
         </div>
+
+        <!-- FULL-WIDTH SECTION: 4-Panel Leibnitz Analytical Plot & Downloads -->
+        <section class="plot-container-card" id="plotSection" style="display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+                <div>
+                    <h3 style="font-size:1.25rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.5rem;">
+                        <span>📊</span>
+                        <span>सङ्केतविश्लेषण-चित्रीकरणम् (Leibnitz 4-Panel Analytical Studio)</span>
+                    </h3>
+                    <p style="font-size:0.85rem; color:var(--text-secondary); margin-top:2px;">
+                        Original Waveform, Conditioned Output, Fourier FFT Spectrum, and Time-Frequency Spectrogram.
+                    </p>
+                </div>
+                <div class="download-btn-group">
+                    <a id="btnDownloadCsv" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
+                        📥 Download Signal (.csv)
+                    </a>
+                    <a id="btnDownloadAudio" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
+                        🎵 Download Audio (.wav)
+                    </a>
+                    <a id="btnDownloadReport" href="#" class="btn btn-outline" style="font-size:0.8rem;" download>
+                        📋 Diagnostic Report (.json)
+                    </a>
+                </div>
+            </div>
+
+            <!-- Multi-Panel Plot Image -->
+            <img id="analyticalPlotImg" class="plot-img" src="" alt="Leibnitz Analytical Plot">
+        </section>
 
         <!-- Hidden Audio Metadata -->
         <span id="metaSampleRate" style="display:none;">16000 Hz</span>

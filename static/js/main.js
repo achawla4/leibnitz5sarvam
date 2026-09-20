@@ -1,7 +1,7 @@
 /**
  * Leibnitz 5.0 for Sarvam - Client Controller
  * Handles audio recording, canvas waveform visualization, DSP execution,
- * and Sarvam AI Indic API interactions.
+ * multi-panel analytical plotting, and Sarvam AI Indic API interactions.
  */
 
 let currentAudioFilename = null;
@@ -10,7 +10,12 @@ let activeSampleRate = 16000;
 let mediaRecorder = null;
 let audioChunks = [];
 let isRecording = false;
+
 let activeSignalContext = {
+    filename: "sanskrit_vedic_chant.wav",
+    sample_rate: 16000.0,
+    duration_s: 3.0,
+    dominant_freq_hz: 140.0,
     snr_db: 24.5,
     mean_pitch_f0_hz: 185.0
 };
@@ -48,7 +53,7 @@ function drawWaveform(canvas, ctx, waveformData, strokeColor = '#00d4ff') {
     
     // Support HiDPI
     const dpr = window.devicePixelRatio || 1;
-    const width = canvas.parentElement.clientWidth;
+    const width = canvas.parentElement.clientWidth || 450;
     const height = 110;
     
     canvas.width = width * dpr;
@@ -57,7 +62,7 @@ function drawWaveform(canvas, ctx, waveformData, strokeColor = '#00d4ff') {
     
     ctx.clearRect(0, 0, width, height);
     
-    // Center line
+    // Center baseline
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
     ctx.lineWidth = 1;
     ctx.beginPath();
@@ -87,6 +92,27 @@ function drawWaveform(canvas, ctx, waveformData, strokeColor = '#00d4ff') {
     ctx.stroke();
 }
 
+// Active File Banner Updater
+function updateActiveFileInfo(data) {
+    const nameElem = document.getElementById('dispFileName');
+    const metaElem = document.getElementById('dispFileMeta');
+    
+    const origName = data.original_name || data.filename || "signal";
+    const fileType = data.file_type || "Audio/Signal";
+    const sr = Math.round(data.sample_rate || activeSampleRate);
+    const dur = data.duration_s || 1.0;
+    
+    if (nameElem) nameElem.innerText = origName;
+    if (metaElem) metaElem.innerText = `Format: ${fileType} | Rate: ${sr} Hz | Duration: ${dur} s`;
+    
+    activeSignalContext.filename = origName;
+    activeSignalContext.sample_rate = sr;
+    activeSignalContext.duration_s = dur;
+    if (data.dominant_freq_hz !== undefined) {
+        activeSignalContext.dominant_freq_hz = data.dominant_freq_hz;
+    }
+}
+
 // Load Presets
 async function loadPreset(presetId) {
     showLoading(true);
@@ -97,7 +123,9 @@ async function loadPreset(presetId) {
             currentAudioFilename = data.filename;
             activeSampleRate = data.sample_rate;
             
+            updateActiveFileInfo(data);
             drawWaveform(rawCanvas, rawCtx, data.waveform_preview, '#00d4ff');
+            
             document.getElementById('rawAudioSource').src = data.audio_url;
             document.getElementById('rawAudioPlayer').load();
             
@@ -132,20 +160,23 @@ async function handleFileUpload(input) {
             currentAudioFilename = data.filename;
             activeSampleRate = data.sample_rate;
             
+            updateActiveFileInfo(data);
             drawWaveform(rawCanvas, rawCtx, data.waveform_preview, '#00d4ff');
+            
             document.getElementById('rawAudioSource').src = data.audio_url;
             document.getElementById('rawAudioPlayer').load();
             
             document.getElementById('metaSampleRate').innerText = `${Math.round(data.sample_rate)} Hz`;
             document.getElementById('metaDuration').innerText = `${data.duration_s} s`;
             
+            // Immediately execute the Leibnitz DSP Suite on this newly uploaded file!
             runPipeline();
         } else {
             alert(data.error || 'Upload failed');
         }
     } catch (e) {
         console.error('Upload error:', e);
-        alert('Upload failed. Check file format.');
+        alert('Upload failed. Please check file format.');
     } finally {
         showLoading(false);
     }
@@ -176,6 +207,7 @@ function initRecording() {
                     if (data.success) {
                         currentAudioFilename = data.filename;
                         activeSampleRate = data.sample_rate;
+                        updateActiveFileInfo(data);
                         drawWaveform(rawCanvas, rawCtx, data.waveform_preview, '#00d4ff');
                         document.getElementById('rawAudioSource').src = data.audio_url;
                         document.getElementById('rawAudioPlayer').load();
@@ -202,7 +234,10 @@ function initRecording() {
 
 // Run Leibnitz Modular DSP Pipeline
 async function runPipeline() {
-    if (!currentAudioFilename) return;
+    if (!currentAudioFilename) {
+        alert('Please select or upload a signal file first.');
+        return;
+    }
     
     // Check which blocks are selected
     const selectedBlocks = [];
@@ -240,8 +275,26 @@ async function runPipeline() {
             // Extract and update metrics
             updateMetrics(data.stages);
             
+            // Update and show analytical 4-panel plot
+            if (data.plot_url) {
+                const plotSec = document.getElementById('plotSection');
+                const plotImg = document.getElementById('analyticalPlotImg');
+                if (plotSec) plotSec.style.display = 'block';
+                if (plotImg) plotImg.src = data.plot_url + '?t=' + Date.now();
+                
+                // Update download buttons
+                const btnCsv = document.getElementById('btnDownloadCsv');
+                const btnAudio = document.getElementById('btnDownloadAudio');
+                const btnReport = document.getElementById('btnDownloadReport');
+                if (btnCsv) btnCsv.href = data.download_csv_url;
+                if (btnAudio) btnAudio.href = data.audio_url;
+                if (btnReport) btnReport.href = data.download_report_url;
+            }
+            
             // Auto update STT button label
             document.getElementById('btnRunSTT').innerText = `🚀 Transcribe via Sarvam Saaras (${document.getElementById('sttLanguage').value})`;
+        } else {
+            alert(data.error || 'Pipeline execution failed.');
         }
     } catch (e) {
         console.error('Pipeline error:', e);
@@ -260,9 +313,6 @@ function updateMetrics(stages) {
         if (metrics.mean_pitch_f0_hz !== undefined) {
             document.getElementById('metricPitch').innerText = `${metrics.mean_pitch_f0_hz} Hz`;
             activeSignalContext.mean_pitch_f0_hz = metrics.mean_pitch_f0_hz;
-        }
-        if (metrics.formant_f1_hz !== undefined) {
-            document.getElementById('metricFormant').innerText = `F1: ${metrics.formant_f1_hz} Hz | F2: ${metrics.formant_f2_hz} Hz`;
         }
         if (metrics.speech_ratio !== undefined) {
             document.getElementById('metricSpeechRatio').innerText = `${Math.round(metrics.speech_ratio * 100)}%`;
@@ -337,14 +387,16 @@ async function runSarvamTTS() {
             currentAudioFilename = data.filename;
             activeSampleRate = data.sample_rate;
             
+            updateActiveFileInfo(data);
             drawWaveform(rawCanvas, rawCtx, data.waveform_preview, '#00d4ff');
+            
             document.getElementById('rawAudioSource').src = data.audio_url;
             document.getElementById('rawAudioPlayer').load();
             
             document.getElementById('metaSampleRate').innerText = `${Math.round(data.sample_rate)} Hz`;
             document.getElementById('metaDuration').innerText = `${data.duration_s} s`;
             
-            // Pass straight through Leibnitz DSP
+            // Pass synthesized voice straight through Leibnitz DSP Studio!
             runPipeline();
         } else {
             alert(data.error || 'TTS Synthesis failed');
@@ -352,7 +404,7 @@ async function runSarvamTTS() {
     } catch (e) {
         alert('Failed to connect to Sarvam TTS.');
     } finally {
-        btn.innerText = '🔊 Synthesize & Send to Leibnitz DSP';
+        btn.innerText = '🔊 Synthesize & Load into Leibnitz Studio';
         btn.disabled = false;
     }
 }
@@ -367,7 +419,6 @@ async function sendCopilotMessage() {
     
     const chatWin = document.getElementById('copilotChatWindow');
     
-    // Append user message
     chatWin.innerHTML += `<div class="chat-bubble user"><strong>You:</strong> ${msg}</div>`;
     input.value = '';
     chatWin.scrollTop = chatWin.scrollHeight;
